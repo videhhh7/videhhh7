@@ -1,0 +1,18 @@
+@model AgentDefinition
+@{
+    ViewData["Title"] = "Agent Builder";
+}
+<h1>Agent Builder</h1>
+<form asp-controller="Agents" asp-action="Run" method="post">
+    @Html.AntiForgeryToken()
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <label asp-for="Name">Agent name</label>
+    <input asp-for="Name" class="form-control" required />
+    <label asp-for="Instructions">Instructions</label>
+    <textarea asp-for="Instructions" class="form-control" rows="5"></textarea>
+    <label asp-for="EndpointName">Configured endpoint key</label>
+    <input asp-for="EndpointName" class="form-control" placeholder="DemoAgent" required />
+    <label for="input">Your prompt</label>
+    <textarea id="input" name="input" class="form-control" rows="4" required></textarea>
+    <button type="submit" class="btn btn-primary mt-3">Run agent</button>
+</form>
