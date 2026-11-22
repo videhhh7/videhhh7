@@ -1,50 +1,30 @@
 # AI Agent Building Tool
 
-An ASP.NET MVC portfolio project for creating configurable agents that call external REST services.
+ASP.NET Core MVC starter app for running named, configurable agents through HTTPS APIs.
 
-## Resume-aligned capabilities
+## Run locally
 
-- C# and ASP.NET MVC architecture.
-- Reusable controllers, models and views.
-- Configurable agent instructions and workflow definitions.
-- REST API integration.
-- JSON request/response processing.
-- Separation between UI, orchestration and external-service adapters.
+Requires the .NET 8 SDK.
 
-## Suggested structure
+1. Copy `appsettings.example.json` to `appsettings.Development.json`.
+2. Replace the example endpoint with an HTTPS endpoint you own or are authorized to call.
+3. From this directory run:
 
-```text
-src/
-  AiAgentBuilder/
-    Controllers/
-    Models/
-    Services/
-    Views/
-tests/
-  AiAgentBuilder.Tests/
+```bash
+dotnet restore
+dotnet build
+dotnet run
 ```
 
-## Request flow
+Open the local URL printed by ASP.NET Core.
 
-1. A user submits an agent configuration from the MVC view.
-2. The controller validates the input model.
-3. The orchestration service loads the configured workflow.
-4. An API client sends a request to the selected external service.
-5. The response is parsed into a typed result.
-6. The controller returns a view model to the UI.
+## Design
 
-## Included starter code
+- MVC controller handles form validation and response rendering.
+- `IAgentEndpointRegistry` resolves a named endpoint from server-side configuration.
+- `AgentRunner` sends JSON using an injected HttpClient and cancellation token.
+- Endpoint values are not accepted as arbitrary URLs from the browser.
 
-- [Agent model](./src/Models/AgentDefinition.cs)
-- [Agent service](./src/Services/AgentRunner.cs)
+## Production hardening
 
-## Security and reliability
-
-- Keep API keys in a secret store or environment variables, never in source control.
-- Validate allowed API hosts to reduce SSRF risk.
-- Apply request timeouts and cancellation tokens.
-- Validate response status codes and JSON shape.
-- Avoid forwarding arbitrary user instructions to privileged tools.
-- Log correlation IDs and safe metadata, not secrets or sensitive payloads.
-
-This is a starter implementation to extend with authentication, persistence, background execution and automated tests.
+Add authentication/authorization, per-user quotas, persistence, audit logging, response-size limits, outbound host allow-list enforcement, rate limiting and tests before deploying publicly. Do not store API keys in appsettings or commit secrets.
